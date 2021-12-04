@@ -1,0 +1,32 @@
+-- ---
+-- Globals
+-- ---
+DROP DATABASE IF EXISTS bills;
+CREATE DATABASE bills;
+\c bills;
+
+-- ---
+-- Table 'Overview'
+--
+-- ---
+
+DROP TABLE IF EXISTS overview CASCADE;
+
+CREATE TABLE overview (
+  bill_id INTEGER NOT NULL,
+  session_id VARCHAR(255) NULL DEFAULT NULL,
+  bill_number VARCHAR(255) NULL DEFAULT NULL,
+  status VARCHAR(255) NULL DEFAULT NULL,
+  status_desc VARCHAR(255) NULL DEFAULT NULL,
+  status_date VARCHAR(255) NULL DEFAULT NULL,
+  title VARCHAR(255) NULL DEFAULT NULL,
+  description TEXT NULL DEFAULT NULL,
+  committee_id VARCHAR(255) NULL DEFAULT NULL,
+  committee VARCHAR(255) NULL DEFAULT NULL,
+  last_action_date VARCHAR(255) NULL DEFAULT NULL,
+  last_action VARCHAR(255) NULL DEFAULT NULL,
+  url VARCHAR(255) NULL DEFAULT NULL,
+  state_link VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (bill_id)
+);
+
