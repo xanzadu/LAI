@@ -1,5 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
+import axios from 'axios';
 import {
   chakra,
   Box,
@@ -28,7 +29,14 @@ import {
 } from '@chakra-ui/react';
 import { FaUser } from 'react-icons/fa';
 
-export default function BillSearch() {
+export default function BillSearch({ id, setId, setStage, setSearchResults }) {
+  const getBills = () => {
+    axios.get(`localhost:8080/bills/${id}`)
+      .then(results => {
+        setSearchResults(results);
+      });
+  };
+
   return (
     <Box bg={useColorModeValue('gray.50', 'inherit')} p={10}>
       <Box mt={[8, 0]}>
@@ -40,14 +48,14 @@ export default function BillSearch() {
           <GridItem colSpan={{ md: 1 }}>
             <Box px={[4, 0]}>
               <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
-                Personal Information
+                Bill Search
               </Heading>
               <Text
                 mt={1}
                 fontSize="sm"
                 color={useColorModeValue('gray.600', 'gray.400')}
               >
-                Use a permanent address where you can receive mail.
+                Search Bills to Analyze Legal Impact
               </Text>
             </Box>
           </GridItem>
@@ -57,6 +65,11 @@ export default function BillSearch() {
               shadow="base"
               rounded={[null, 'md']}
               overflow={{ sm: 'hidden' }}
+              onSubmit={e => {
+                e.preventDefault();
+                getBills();
+                setStage(1);
+              }}
             >
               <Stack
                 px={4}
@@ -73,7 +86,7 @@ export default function BillSearch() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      First name
+                      Bill Number
                     </FormLabel>
                     <Input
                       type="text"
@@ -86,6 +99,10 @@ export default function BillSearch() {
                       size="sm"
                       w="full"
                       rounded="md"
+                      value={id}
+                      onChange={e => {
+                        setId(e.target.value);
+                      }}
                     />
                   </FormControl>
 
@@ -96,7 +113,7 @@ export default function BillSearch() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      Last name
+                      House
                     </FormLabel>
                     <Input
                       type="text"
@@ -119,7 +136,7 @@ export default function BillSearch() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      Email address
+                      Statute Year
                     </FormLabel>
                     <Input
                       type="text"
@@ -142,7 +159,7 @@ export default function BillSearch() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      Country / Region
+                      Code
                     </FormLabel>
                     <Select
                       id="country"
@@ -156,9 +173,9 @@ export default function BillSearch() {
                       w="full"
                       rounded="md"
                     >
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
+                      <option>BPC</option>
+                      <option>CIV</option>
+                      <option>CPC</option>
                     </Select>
                   </FormControl>
 
@@ -169,7 +186,7 @@ export default function BillSearch() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      Street address
+                      Author
                     </FormLabel>
                     <Input
                       type="text"
@@ -192,7 +209,7 @@ export default function BillSearch() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      City
+                      Statue Year
                     </FormLabel>
                     <Input
                       type="text"

@@ -12,7 +12,9 @@ import {
   theme,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
-import  BillSearch  from './BillSearch';
+import BillSearch from './BillSearch';
+import BillResults from './BillResults';
+import BillText from './BillText';
 
 const sentiment = new Sentiment();
 
@@ -54,19 +56,39 @@ const Face = function ({ mood }) {
 };
 
 export default function App() {
-  const [text, setText] = useState('');
-  const [mood, setMood] = useState(0);
+  const [stage, setStage] = useState(0);
+  const [id, setId] = useState('');
+  const [searchResults, setSearchResults] = useState({});
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    const textSentiment = sentiment.analyze(text);
-    setMood(textSentiment.score);
-    setText('');
-  };
+  // const handleSubmit = e => {
+  //   e.preventDefault();
+  //   const textSentiment = sentiment.analyze(text);
+  //   setMood(textSentiment.score);
+  //   setText('');
+  // };
+  if (stage === 0) {
+    return (
+      <ChakraProvider theme={theme}>
+        <BillSearch
+          setStage={setStage}
+          id={id}
+          setId={setId}
+          setSearchResults={setSearchResults}
+        />
+      </ChakraProvider>
+    );
+  }
+  if (stage === 1) {
+    return (
+      <ChakraProvider theme={theme}>
+        <BillResults searchResults={searchResults} />
+      </ChakraProvider>
+    );
+  }
 
   return (
     <ChakraProvider theme={theme}>
-      <BillSearch />
+      <BillText setStage={setStage} setId={setId} />
     </ChakraProvider>
   );
 }
