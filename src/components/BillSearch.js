@@ -31,14 +31,21 @@ import { FaUser } from 'react-icons/fa';
 
 export default function BillSearch({ id, setId, setStage, setSearchResults }) {
   const getBills = () => {
-    axios.get(`localhost:8080/bills/${id}`)
+    axios
+      .get(`http://localhost:8080/bills/${id}`)
       .then(results => {
-        setSearchResults(results);
-      });
+        setSearchResults(results.data);
+      })
+      .then(() => setStage(1));
   };
 
   return (
-    <Box bg={useColorModeValue('gray.50', 'inherit')} p={10}>
+    <Box
+      bg={useColorModeValue('gray.50', 'inherit')}
+      p={10}
+      w="100vw"
+      h="100vh"
+    >
       <Box mt={[8, 0]}>
         <SimpleGrid
           display={{ base: 'initial', md: 'grid' }}
@@ -68,7 +75,6 @@ export default function BillSearch({ id, setId, setStage, setSearchResults }) {
               onSubmit={e => {
                 e.preventDefault();
                 getBills();
-                setStage(1);
               }}
             >
               <Stack
@@ -275,7 +281,7 @@ export default function BillSearch({ id, setId, setStage, setSearchResults }) {
               <Box
                 px={{ base: 4, sm: 6 }}
                 py={3}
-                bg={useColorModeValue('gray.300', 'gray.900')}
+                bg={useColorModeValue('gray.700', 'gray.900')}
                 textAlign="center"
               >
                 <Button
