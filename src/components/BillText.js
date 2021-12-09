@@ -1,54 +1,47 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import {
-  chakra,
   Box,
   VStack,
   useColorModeValue,
   HStack,
   StackDivider,
-  Heading,
   Text,
-  Stack,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  FormHelperText,
-  Textarea,
-  Avatar,
-  Icon,
   Button,
-  VisuallyHidden,
-  Select,
-  Checkbox,
-  RadioGroup,
-  Radio,
 } from '@chakra-ui/react';
+import { apiToken } from '../tokens';
 
+// eslint-disable-next-line no-unused-vars
 export default function BilText({ billText, cleanBillText }) {
+  // eslint-disable-next-line no-unused-vars
+  const [renderText, setRenderText] = useState('');
   const options = {
-    method: 'GET',
-    url: 'https://meaningcloud-summarization-v1.p.rapidapi.com/summarization-1.0',
-    params: { sentences: '5', txt: cleanBillText },
+    method: 'POST',
+    url: 'https://gpt-summarization.p.rapidapi.com/summarize',
     headers: {
-      accept: 'application/json',
-      'x-rapidapi-host': 'meaningcloud-summarization-v1.p.rapidapi.com',
-      'x-rapidapi-key': '254d73f114mshb2ae960abfc3581p1e3b5djsnfecaf5b03e7f',
+      'content-type': 'application/json',
+      'x-rapidapi-host': 'gpt-summarization.p.rapidapi.com',
+      'x-rapidapi-key': apiToken,
+    },
+    data: {
+      text: cleanBillText,
+      num_sentences: 10,
     },
   };
-  const getSummary = () => {
+
+  function getSummary() {
     axios
       .request(options)
       .then(response => {
-        console.log(response.data);
+        setRenderText('Loading...');
+        setRenderText(response.data.summary);
       })
       .catch(error => {
         console.error(error);
       });
-  };
+  }
   return (
     <HStack
       bg={useColorModeValue('gray.50', 'inherit')}
@@ -80,10 +73,15 @@ export default function BilText({ billText, cleanBillText }) {
           p={5}
           shadow="md"
           borderWidth="1px"
-          onClick={getSummary}
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={() => {
+            setRenderText('Loading...');
+            getSummary();
+          }}
         >
           Run Experimental Natural Language Processing Text Summarizer{' '}
         </Button>
+        <Text>{renderText}</Text>
       </VStack>
     </HStack>
   );

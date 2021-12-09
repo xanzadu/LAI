@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/function-component-definition */
 import React, { useMemo } from 'react';
@@ -16,7 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy } from 'react-table';
+import { billToken } from '../tokens';
 
+// eslint-disable-next-line react/prop-types
 export default function BillResults({ searchResults, setStage, setBillText, setCleanBillText }) {
   const billHelper = bill => {
     let billId = '';
@@ -33,13 +38,13 @@ export default function BillResults({ searchResults, setStage, setBillText, setC
     const billId = billHelper(bill);
     axios
       .get(
-        `https://api.legiscan.com/?key=154292cea454bf73ef77f2994bc3dd39&op=getBill&id=${billId}`
+        `https://api.legiscan.com/?key=${billToken}&op=getBill&id=${billId}`
       )
       .then(results => {
         const docID = results.data.bill.texts[0].doc_id;
         axios
           .get(
-            `https://api.legiscan.com/?key=154292cea454bf73ef77f2994bc3dd39&op=getBillText&id=${docID}`
+            `https://api.legiscan.com/?key=${billToken}&op=getBillText&id=${docID}`
           )
           .then(text => {
             const billText = text.data.text.doc;

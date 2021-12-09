@@ -1,17 +1,7 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
+import { ChakraProvider, theme } from '@chakra-ui/react';
+// import { ColorModeSwitcher } from './ColorModeSwitcher';
 import BillSearch from './BillSearch';
 import BillResults from './BillResults';
 import BillText from './BillText';
@@ -50,7 +40,12 @@ export default function App() {
 
   return (
     <ChakraProvider theme={theme}>
-      <BillText setStage={setStage} setId={setId} billText={billText} cleanBillText={cleanBillText}/>
+      <BillText
+        setStage={setStage}
+        setId={setId}
+        billText={billText}
+        cleanBillText={cleanBillText}
+      />
     </ChakraProvider>
   );
 }
